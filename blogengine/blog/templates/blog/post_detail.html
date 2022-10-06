@@ -1,0 +1,19 @@
+{% extends 'base_blog.html' %}
+
+{% block title %}
+    {{ instance.title }} | {{ block.super }}
+{% endblock %}
+
+{% block action %}
+    <li><a class="dropdown-item" href="{{ instance.get_create_url }}">Создать</a></li>
+    <li><a class="dropdown-item" href="{{ instance.get_update_url }}">Изменить</a></li>
+    <li><a class="dropdown-item" href="{{ instance.get_delete_url }}">Удалить</a></li>
+{% endblock %}
+
+{% block content %}
+    <h1 class="mt-5">
+        {{ instance.title }}
+    </h1>
+    <p>{{ instance.body }}</p>
+    <p class="mb-10">{{ instance.date_pub }}</p>
+{% endblock %}

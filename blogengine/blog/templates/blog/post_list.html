@@ -1,0 +1,16 @@
+{% extends 'base_blog.html' %}
+
+{% block title %}
+Все посты: | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mb-5">
+        Все посты:
+    </h1>
+    {% for post in instances %}
+        {% include 'blog/includes/post_card.html' %}
+    {% endfor %}
+
+{% endblock %}

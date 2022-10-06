@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block drop_down_button %}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Управлять
+    </a>
+    <ul class="dropdown-menu">
+        {% block action %}
+            <li><a class="dropdown-item" href="{{ model.get_create_url }}">Создать</a></li>
+        {% endblock %}
+    </ul>
+</li>
+{% endblock %}
+
+{% block content %}
+    No content!
+{% endblock %}

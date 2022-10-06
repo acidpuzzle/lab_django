@@ -1,0 +1,20 @@
+{% extends 'base_blog.html' %}
+{% block title %}
+    {{ instance.title }} | {{ block.super }}
+{% endblock %}
+
+{% block action %}
+    <li><a class="dropdown-item" href="{{ instance.get_create_url }}">Создать</a></li>
+    <li><a class="dropdown-item" href="{{ instance.get_update_url }}">Изменить</a></li>
+    <li><a class="dropdown-item" href="{{ instance.get_delete_url }}">Удалить</a></li>
+{% endblock %}
+
+{% block content %}
+    <h1 class="mt-5">
+        Посты с тэгом "<b>{{ instance.title }}</b>" :
+    </h1>
+    {% for post in instance.posts.all %}
+        {% include 'blog/includes/post_card.html' %}
+    {% endfor %}
+    <p>{{ post.body }}</p>
+{% endblock %}

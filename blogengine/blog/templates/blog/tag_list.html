@@ -1,0 +1,16 @@
+{% extends 'base_blog.html' %}
+{% block title %}
+Список тэгов: | {{ block.super }}
+{% endblock %}
+{% block content %}
+    <h1 class="mb-5">
+        Список тэгов:
+    </h1>
+    {% for tag in instances %}
+        <p>
+            <a href="{{ tag.get_absolute_url }}">
+                <button type="button" class="btn btn-outline-success btn-color:">{{ tag.title }}</button>
+            </a>
+        </p>
+    {% endfor %}
+{% endblock %}
