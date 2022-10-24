@@ -14,5 +14,7 @@
 {% endblock %}
 
 {% block content %}
-    No content!
+    {% if is_paginated %}
+        {% include 'blog/includes/pagination.html' %}
+    {% endif %}
 {% endblock %}

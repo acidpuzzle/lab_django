@@ -1,0 +1,24 @@
+{% if is_paginated %}
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link {% if not prev_page %} disabled {% endif %}" href="?page=1"> << </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link {% if not prev_page %} disabled {% endif %}" href="?page={{ prev_page }}"> < </a>
+            </li>
+            {% for n in page_number_gen %}
+                <li class="page-item {% if instance.number == n %} active {% endif %}"
+                    aria-current="page">
+                    <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item">
+                <a class="page-link {% if not next_page %} disabled {% endif %}" href="?page={{ next_page }}"> > </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link {% if not next_page %} disabled {% endif %}" href="?page={{ instance.paginator.num_pages }}"> >> </a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}

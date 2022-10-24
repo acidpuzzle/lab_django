@@ -70,6 +70,9 @@ class Post(BaseBlogObject):
     singular_obj_name = 'пост'
     plural_obj_name = 'посты'
 
+    class Meta:
+        ordering = ['-date_pub']
+
 
 class Tag(BaseBlogObject):
     title = models.CharField(max_length=50, unique=True)
@@ -77,4 +80,7 @@ class Tag(BaseBlogObject):
 
     singular_obj_name = 'тэг'
     plural_obj_name = 'тэги'
+
+    class Meta:
+        ordering = ['title']
 

@@ -1,8 +1,30 @@
 import logging
-
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 logger = logging.getLogger(__name__)
+
+
+class CustomPaginator(Paginator):
+    def get_fixed_length_page_range(self, number=1, *, on_each_side=2):
+        """
+        Range of fixed length pages
+        [1,2,3,4,5] or [7,8,9,10,11]
+        """
+
+        number = self.validate_number(number)
+        on_each_side = self.validate_number(on_each_side)
+
+        full_length = (on_each_side * 2) + 1
+
+        if self.num_pages < full_length:
+            yield from range(1, self.num_pages + 1)
+        elif number <= on_each_side:
+            yield from range(1, full_length + 1)
+        elif number >= self.num_pages - on_each_side:
+            yield from range(self.num_pages - full_length + 1, self.num_pages + 1)
+        else:
+            yield from range(number - on_each_side, number + on_each_side + 1)
 
 
 class ObjectMixin:
@@ -22,11 +44,33 @@ class ObjectDetailMixin(ObjectMixin):
 
 
 class ObjectListMixin(ObjectMixin):
+    default_paginate_by = 3
+
     def get(self, request):
         instances = self.model.objects.all()
-        print(f"{instances=}")
-        logger.info(f"{instances=}")
-        return render(request, self.template, context={'instances': instances, 'model': self.model})
+        logger.debug(f"{instances=}")
+
+        paginate_by = request.GET.get('paginate_by', self.default_paginate_by)
+
+        paginator = CustomPaginator(instances, paginate_by)
+        page_number = request.GET.get('page', 1)
+        page_instance = paginator.get_page(page_number)
+        is_paginated = page_instance.has_other_pages()
+        next_page = page_instance.next_page_number() if page_instance.has_next() else ''
+        prev_page = page_instance.previous_page_number() if page_instance.has_previous() else ''
+
+        page_number_gen = paginator.get_fixed_length_page_range(page_number)
+
+        context = {
+            'instance': page_instance,
+            'is_paginated': is_paginated,
+            'next_page': next_page,
+            'prev_page': prev_page,
+            'page_number_gen': page_number_gen,
+            'model': self.model,
+        }
+        logger.info(f"{context=}")
+        return render(request, self.template, context=context)
 
 
 class ObjectCreateMixin(ObjectMixin):

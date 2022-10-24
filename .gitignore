@@ -186,4 +186,6 @@ fabric.properties
 
 # static files in django app
 */static
-blogengine/static
+
+# SQLite db files
+*.sqlite3
